@@ -102,3 +102,48 @@ Mobile Preview
 
 ---
 
+### ⚙️ Setup & Installation
+
+Follow these steps to run the Collaborative Todo Application locally on your system.
+
+**📥 1. Download or Clone the Repository**
+
+You can get the project using Git:
+```bash
+   git clone https://github.com/SaiDurga-28/collaborative-todo.git
+   cd collaborative-todo
+```
+**📦 2. Install Dependencies**
+
+Install all required packages:
+
+```bash
+   npm install
+```
+
+This installs:
+
+- React
+
+- Vite
+
+- React Icons
+
+- All Context Providers
+
+- Other dependencies
+
+**🚀 3. Start the Development Server**
+
+Run the app locally:
+
+```bash
+   npm run dev
+```
+
+Vite will start the server and display a URL like:
+
+http://localhost:5173/
+
+
+Open this link in your browser to view the application.
