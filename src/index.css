@@ -1,0 +1,867 @@
+/* :root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+body[data-theme="light"] {
+  background-color: #f9fafb;
+  color: #111827;
+}
+
+body[data-theme="dark"] {
+  background-color: #111827;
+  color: #f9fafb;
+}
+
+button {
+  cursor: pointer;
+} */
+
+/* =========================
+   THEME-CENTRIC index.css
+   Paste this ENTIRE file into src/index.css
+   ========================= */
+
+/* Optional: Inter font in index.html for polished look:
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+*/
+
+:root {
+  /* LIGHT THEME VARIABLES (default) */
+  --bg-page: #f3f6fb;
+  --bg-surface: #ffffff;
+  --text-primary: #0f172a;
+  --text-muted: #6b7280;
+  --border: rgba(16,24,40,0.06);
+  --shadow: 0 12px 30px rgba(16,24,40,0.06);
+  --accent: #6d28d9;
+  --accent-2: #06b6d4;
+  --btn-contrast: #ffffff;
+  --glass: rgba(255,255,255,0.7);
+
+  --radius: 12px;
+  --gap: 12px;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial;
+}
+
+/* DARK THEME overrides (applies when body[data-theme="dark"]) */
+body[data-theme="dark"] {
+  --bg-page: #071022;
+  --bg-surface: #071627;
+  --text-primary: #e6eef8;
+  --text-muted: #9aa7be;
+  --border: rgba(255,255,255,0.04);
+  --shadow: 0 18px 40px rgba(0,0,0,0.65);
+  --accent: #7c3aed;
+  --accent-2: #06b6d4;
+  --btn-contrast: #071627;
+  --glass: rgba(255,255,255,0.03);
+}
+
+/* -------------------------
+   Base / layout
+   ------------------------- */
+* { box-sizing: border-box; }
+html,body,#root { height: 100%; }
+body {
+  margin: 0;
+  background: var(--bg-page);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* App root & shell */
+.app-root {
+  min-height: 100vh;
+  padding: 28px 14px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+.app-shell {
+  width: 100%;
+  max-width: 1200px;
+  border-radius: calc(var(--radius) * 1.1);
+  background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,255,255,0.94));
+  padding: 18px;
+  box-shadow: var(--shadow);
+  transition: background 180ms ease, box-shadow 180ms ease;
+  border: 1px solid var(--border);
+}
+body[data-theme="dark"] .app-shell {
+  background: linear-gradient(180deg, rgba(6,10,15,0.75), rgba(6,10,15,0.65));
+}
+
+/* Header */
+.app-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap: 14px;
+  margin-bottom: 16px;
+  flex-wrap:wrap;
+}
+.app-title { margin:0; font-size:1.5rem; font-weight:700; }
+.app-user-greeting { margin:4px 0 0 0; color: var(--accent); font-weight:700; font-size:1.05rem; letter-spacing: -0.01em; }
+.app-subtitle { margin:0; color:var(--text-muted); font-size:0.92rem; }
+
+/* header right */
+.app-header-right { display:flex; align-items:center; gap:10px; }
+
+/* small circular icon button */
+.btn-circle {
+  width:40px; height:40px; border-radius:999px; display:inline-flex; align-items:center; justify-content:center;
+  border: 1px solid rgba(16,24,40,0.05);
+  background: var(--glass);
+  cursor:pointer;
+  transition: transform 120ms, box-shadow 160ms, background 160ms, border-color 160ms;
+}
+.btn-circle:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(99,102,241,0.08); }
+body[data-theme="dark"] .btn-circle {
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 8px 24px rgba(124,58,237,0.08), 0 2px 6px rgba(0,0,0,0.6) inset;
+}
+body[data-theme="dark"] .btn-circle svg { color: #e6eef8; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.45)); }
+.btn-circle:focus { outline: 3px solid rgba(99,102,241,0.18); outline-offset: 2px; }
+
+/* logout pill */
+.btn-logout {
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(16,24,40,0.06);
+  background: linear-gradient(90deg, rgba(255,255,255,0.98), rgba(255,255,255,0.94));
+  color: var(--text-primary);
+  cursor: pointer;
+  font-weight: 700;
+  box-shadow: 0 6px 18px rgba(16,24,40,0.04);
+  transition: transform 100ms, box-shadow 120ms, background 120ms;
+}
+.btn-logout:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(16,24,40,0.08); }
+body[data-theme="dark"] .btn-logout {
+  background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+  border: 1px solid rgba(255,255,255,0.06);
+  color: #e6eef8;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+}
+
+/* layout grid */
+.app-layout {
+  display:grid;
+  grid-template-columns: 260px 1fr 320px;
+  gap: 14px;
+}
+@media (max-width:1100px) {
+  .app-layout { grid-template-columns: 240px 1fr; }
+  .activity-panel { grid-column: 1 / -1; }
+}
+@media (max-width:720px) {
+  .app-layout { grid-template-columns: 1fr; }
+}
+
+/* panels */
+.panel {
+  background: var(--bg-surface);
+  border-radius: var(--radius);
+  padding: 12px;
+  border: 1px solid var(--border);
+  transition: background 150ms ease, border 150ms ease, box-shadow 150ms ease;
+  box-shadow: var(--shadow);
+}
+.panel-title { margin:0 0 8px 0; font-size:1rem; font-weight:600; }
+
+/* inputs & buttons */
+.input {
+  width:100%; padding:10px 12px; border-radius:999px; border:1px solid var(--border); outline:none; font-size:0.95rem;
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.96));
+}
+body[data-theme="dark"] .input { background: rgba(255,255,255,0.02); color: var(--text-primary); border-color: var(--border); }
+.input:focus { box-shadow: 0 8px 18px rgba(99,102,241,0.08); border-color: rgba(99,102,241,0.22); }
+
+/* panel form row (used by new task form). gap increased, stacks on small screens */
+.panel-form-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+@media (max-width:720px) {
+  .panel-form-row { flex-direction: column; align-items: stretch; gap: 10px; }
+  .panel-form-row .btn { width: 100%; margin-left: 0 !important; }
+}
+
+/* buttons */
+.btn {
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  color: var(--btn-contrast); padding:8px 12px; border-radius:999px; border:none; cursor:pointer; font-weight:700;
+}
+.btn:active { transform: translateY(1px); }
+
+.btn-chip { background:transparent; border:none; cursor:pointer; padding:4px; font-weight:600; color:var(--text-muted); }
+
+/* DELETE (danger) button style for tasks & subtasks */
+.btn-delete {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(220,38,38,0.12);
+  background: linear-gradient(90deg, rgba(255,246,246,1), rgba(255,238,238,0.9));
+  color: #b91c1c;
+  font-weight:700;
+  cursor:pointer;
+  transition: transform 100ms, box-shadow 120ms, background 120ms;
+}
+.btn-delete:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(185,28,28,0.12);
+  background: linear-gradient(90deg, rgba(255,238,238,1), rgba(255,228,228,0.95));
+}
+body[data-theme="dark"] .btn-delete {
+  background: linear-gradient(90deg, rgba(34,10,10,0.16), rgba(34,10,10,0.12));
+  color: #ffb4b4;
+  border: 1px solid rgba(255,84,84,0.12);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+}
+
+/* sidebar (lists) */
+.sidebar-panel { display:flex; flex-direction:column; gap:10px; min-height: 320px; }
+.list-reset { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:8px; }
+.sidebar-item { display:flex; align-items:center; justify-content:space-between; padding:10px; border-radius:10px; cursor:pointer; transition:background 140ms, transform 120ms; color:var(--text-muted); }
+.sidebar-item:hover { transform: translateY(-3px); background: rgba(99,102,241,0.06); color: var(--text-primary); }
+.sidebar-item-active { background: linear-gradient(90deg, rgba(124,58,237,0.08), rgba(99,102,241,0.04)); color:var(--text-primary); font-weight:700; }
+
+/* task panel */
+.tasks-panel { display:flex; flex-direction:column; gap:12px; }
+.task-list { display:flex; flex-direction:column; gap:12px; }
+.task-card {
+  border-radius: 12px; padding: 12px; background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.92));
+  border:1px solid var(--border); box-shadow: 0 8px 20px rgba(16,24,40,0.04);
+  transition: transform 160ms ease, box-shadow 160ms;
+}
+body[data-theme="dark"] .task-card { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); box-shadow: 0 12px 30px rgba(0,0,0,0.5); }
+.task-card:hover { transform: translateY(-6px); box-shadow: 0 22px 40px rgba(16,24,40,0.08); }
+
+.task-row { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+.task-main { display:flex; align-items:center; gap:10px; cursor:pointer; }
+.task-title { font-size:1rem; font-weight:650; color:var(--text-primary); }
+.task-title-done { color: var(--text-muted); text-decoration: line-through; font-weight:500; }
+
+/* tags */
+.task-tags-row { margin-top:10px; display:flex; gap:8px; flex-wrap:wrap; }
+.tag {
+  display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; font-weight:700;
+  background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,255,255,0.94)); border: 1px solid rgba(16,24,40,0.04); color:var(--text-primary);
+}
+body[data-theme="dark"] .tag { background: rgba(255,255,255,0.02); border-color: var(--border); color:var(--text-primary); }
+.task-tags-row .tag:nth-child(5n+1) { background: #fff7ed; color: #7c2d00; }
+.task-tags-row .tag:nth-child(5n+2) { background: #f5f3ff; color: #4c1d95; }
+.task-tags-row .tag:nth-child(5n+3) { background: #ecfeff; color: #064e3b; }
+.task-tags-row .tag:nth-child(5n+4) { background: #fff1f2; color: #831843; }
+.task-tags-row .tag:nth-child(5n+5) { background: #eff6ff; color: #0b3a66; }
+
+/* subtasks */
+.subtasks { margin-top:10px; display:flex; flex-direction:column; gap:8px; padding-left:10px; }
+.subtask-row { display:flex; align-items:center; gap:10px; }
+.subtask-title { color:var(--text-muted); }
+.subtask-title-done { text-decoration: line-through; color: #9ca3af; }
+
+/* activity */
+.activity-panel { max-height:70vh; overflow:auto; display:flex; flex-direction:column; gap:8px; }
+.activity-item { padding:10px; border-radius:8px; background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,255,255,0.94)); border:1px solid rgba(16,24,40,0.03); color:var(--text-muted); }
+
+/* small utils */
+.fade-in { animation: fadeInUp 360ms cubic-bezier(.16,.84,.24,1) both; }
+@keyframes fadeInUp { from { opacity:0; transform:translateY(8px);} to { opacity:1; transform:none;} }
+
+/* header greeting slightly bigger */
+.app-user-greeting {
+  margin: 0.125rem 0 0 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: -0.01em;
+}
+
+/* tag refinements (smaller) */
+.tag {
+  padding: 6px 10px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  border-radius: 999px;
+  box-shadow: 0 6px 14px rgba(16,24,40,0.04);
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.tag .btn-chip {
+  padding: 0 6px;
+  font-size: 0.78rem;
+  color: rgba(16,24,40,0.65);
+}
+
+/* small responsive tweaks */
+@media (max-width:600px) {
+  .tag { padding: 5px 8px; font-size: 0.78rem; }
+  .app-user-greeting { font-size: 1rem; }
+  .app-shell { padding: 12px; }
+}
+
+/* ===== Subtask input styling & spacing ===== */
+.subtask-input {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.96));
+  font-size: 0.98rem;
+  outline: none;
+}
+body[data-theme="dark"] .subtask-input {
+  background: rgba(255,255,255,0.02);
+  border-color: var(--border);
+  color: var(--text-primary);
+}
+.subtask-row { gap: 10px; align-items: center; }
+
+/* slightly larger defaults for better readability */
+.panel-title { font-size: 1.02rem; }
+.task-title { font-size: 1.06rem; }
+.subtask-title { font-size: 0.98rem; }
+
+/* reduce card paddings slightly so subtasks feel compact */
+.task-card { padding: 10px; }
+
+/* add small vertical spacing between task-cards */
+.task-list > .task-card + .task-card { margin-top: 10px; }
+
+/* smaller gap for tags and subtasks */
+.task-tags-row { gap: 6px; }
+
+/* Add subtle divider between sections inside card */
+.task-card .subtasks { padding-top: 8px; border-top: 1px dashed rgba(16,24,40,0.03); margin-top: 10px; }
+body[data-theme="dark"] .task-card .subtasks { border-top-color: rgba(255,255,255,0.03); }
+
+/* mobile tweak */
+@media (max-width: 600px) {
+  .subtask-input { font-size: 0.9rem; padding: 7px 10px; }
+  .task-title { font-size: 1rem; }
+}
+
+/* -----------------------------
+  EXTRA MOBILE TUNES (<=420px & <=360px)
+  Improve layout for very narrow screens (320px)
+   ----------------------------- */
+
+/* Ensure auth card stacks into a single column on small screens */
+.auth-root .auth-card {
+  display: grid;
+  grid-template-columns: 1fr 420px; /* default - will be overridden by media rules */
+  gap: 20px;
+}
+
+/* Stack the auth card at <= 720 handled earlier; stronger rules <=420 and <=360 */
+@media (max-width: 420px) {
+  .auth-root .auth-card {
+    grid-template-columns: 1fr !important;
+    width: calc(100% - 20px) !important;
+    max-width: 520px !important;
+    padding: 12px !important;
+    gap: 10px !important;
+  }
+
+  .auth-root .auth-card > * { width: 100%; }
+  .auth-root .auth-card .auth-left,
+  .auth-root .auth-card .auth-form { padding: 6px !important; }
+
+  .app-shell { padding: 8px !important; }
+  .panel { padding: 8px !important; }
+  .task-card { padding: 8px !important; }
+  .task-list > .task-card + .task-card { margin-top: 8px !important; }
+
+  .panel-form-row { flex-direction: column !important; gap: 8px !important; }
+  .panel-form-row .btn { width: 100% !important; margin-left: 0 !important; }
+
+  .input, .subtask-input { font-size: 0.95rem !important; padding: 8px 10px !important; }
+
+  .app-header { gap: 8px; padding-bottom: 6px; }
+  .app-title { font-size: 1.15rem; }
+  .app-user-greeting { font-size: 0.98rem; }
+
+  .activity-panel { max-height: 320px; }
+}
+
+/* Extra-tight rules for very small phones (<=360px) like 320 width */
+@media (max-width: 360px) {
+  .auth-root .auth-card {
+    padding: 10px !important;
+    gap: 8px !important;
+    width: calc(100% - 16px);
+    max-width: 420px;
+  }
+  .app-shell { padding: 8px; }
+  .panel { padding: 8px; }
+  .task-card { padding: 8px 8px; border-radius: 10px; }
+  .task-title { font-size: 0.98rem; }
+  .subtask-title { font-size: 0.92rem; }
+  .tag { font-size: 0.78rem; padding: 5px 8px; }
+
+  .btn-circle { width: 36px; height: 36px; }
+  .btn { padding: 8px 10px; font-size: 0.95rem; }
+  .btn-delete { padding: 6px 8px; font-size: 0.88rem; }
+
+  .panel-form-row { gap: 8px; }
+  .panel-form-row .input { padding: 9px 10px; font-size: 0.95rem; }
+}
+/* ----- Minimal responsive fix for very small viewports (append only) ----- */
+
+/* Prevent any horizontal overflow on tiny screens */
+@media (max-width: 420px) {
+  html, body {
+    overflow-x: hidden;
+  }
+
+  /* Make the auth card truly fit the viewport and center it */
+  .auth-root .auth-card {
+    box-sizing: border-box !important;
+    width: calc(100% - 16px) !important;   /* keep some page padding */
+    max-width: 420px !important;           /* never wider than small phones */
+    margin: 8px auto !important;
+    grid-template-columns: 1fr !important; /* single column */
+    gap: 10px !important;
+    padding: 10px !important;
+    max-height: calc(100vh - 40px) !important; /* keep it inside viewport */
+    overflow: hidden !important;               /* inner area will scroll */
+  }
+
+  /* Make card children full width and use box-sizing */
+  .auth-root .auth-card > * {
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* allow internal scrolling inside the card content (so header stays visible) */
+  .auth-root .auth-card .auth-left,
+  .auth-root .auth-card .auth-form {
+    box-sizing: border-box !important;
+    max-height: calc(100vh - 140px) !important; /* leave room for header/footer */
+    overflow: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Make the app-shell and inner panels adapt to tiny width */
+  .app-shell {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 10px !important;
+  }
+
+  /* Force the three-column layout to stack on tiny screens */
+  .app-layout {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  /* Make panels comfortable & avoid internal horizontal scroll */
+  .panel, .task-card, .sidebar-panel {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    overflow: visible !important;
+    padding: 10px !important;
+  }
+
+  /* Ensure forms stack and buttons are full-width for tiny screens */
+  .panel-form-row { flex-direction: column !important; gap: 8px !important; }
+  .panel-form-row .btn { width: 100% !important; margin-left: 0 !important; }
+
+  /* Slightly reduce input sizes to avoid overflow */
+  .input, .subtask-input { padding: 8px 10px !important; font-size: 0.95rem !important; }
+}
+
+/* Extra-tight for very small narrow phones (<=360) */
+@media (max-width: 360px) {
+  .auth-root .auth-card {
+    width: calc(100% - 12px) !important;
+    padding: 8px !important;
+    max-height: calc(100vh - 30px) !important;
+  }
+  .auth-root .auth-card .auth-left,
+  .auth-root .auth-card .auth-form {
+    max-height: calc(100vh - 120px) !important;
+    padding: 8px !important;
+  }
+
+  .app-shell { padding: 8px !important; }
+  .panel { padding: 8px !important; }
+  .task-card { padding: 8px !important; }
+  .panel-form-row .btn { padding: 8px 10px !important; }
+}
+/* -------- Tiny responsive fix: keep app inside viewport & allow inner scrolling -------- */
+@media (max-width: 420px) {
+  /* ensure root fills screen */
+  html, body, #root { height: 100%; margin: 0; }
+
+  /* lock the outer page to viewport to avoid outer scrollbar */
+  .app-root { height: 100vh !important; overflow: hidden !important; }
+
+  /* app-shell becomes a column container that fills viewport; header fixed height */
+  .app-shell {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    overflow: hidden !important;
+    padding: 10px !important;
+  }
+
+  /* header stays at top; layout becomes the scrollable region */
+  .app-header { flex: 0 0 auto !important; }
+
+  /* the main layout area scrolls internally */
+  .app-layout {
+    flex: 1 1 auto !important;
+    min-height: 0 !important; /* important to allow children to shrink */
+    overflow: auto !important;
+    -webkit-overflow-scrolling: touch !important; /* momentum on iOS */
+    padding-right: 6px !important; /* allow for internal scrollbar without layout shift */
+    box-sizing: border-box !important;
+  }
+
+  /* make each panel behave normally inside the scroll area */
+  .panel, .sidebar-panel, .tasks-panel, .activity-panel {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+  }
+
+  /* ensure activity list doesn't force extra width and wraps long text */
+  .activity-item, .activity-text {
+    word-break: break-word !important;
+    white-space: normal !important;
+  }
+
+  /* optionally limit activity panel height inside the scroll area (keeps content manageable) */
+  .activity-panel {
+    max-height: none !important;
+  }
+
+  /* keep auth card children scrollable when unauthenticated */
+  .auth-root .auth-card .auth-left,
+  .auth-root .auth-card .auth-form {
+    max-height: calc(100vh - 140px) !important;
+    overflow: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    box-sizing: border-box !important;
+  }
+
+  /* tighten paddings so nothing overflows horizontally */
+  .task-card, .panel { padding: 8px !important; }
+  .input, .subtask-input { padding: 8px 10px !important; font-size: 0.95rem !important; }
+}
+
+/* extra small phones */
+@media (max-width: 360px) {
+  .app-layout { padding-right: 4px !important; }
+  .app-shell { padding: 8px !important; }
+  .auth-root .auth-card { width: calc(100% - 12px) !important; }
+}
+
+/* Force single column on ALL small phones regardless of other rules */
+@media (max-width: 600px) {
+  .auth-card {
+    grid-template-columns: 1fr !important;
+    width: 100% !important;
+  }
+}
+/* ============================================================
+   SMALL-SCREEN TIGHT LAYOUT — make Lists / Tasks / Activity
+   match width, center and avoid horizontal overflow.
+   Paste this at the BOTTOM of src/index.css
+   ============================================================ */
+
+@media (max-width: 720px) {
+  /* Stack everything vertically and center panels */
+  .app-layout {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 12px !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+  }
+
+  /* Give all main panels the same constrained width */
+  .panel,
+  .sidebar-panel,
+  .tasks-panel,
+  .activity-panel,
+  .task-card {
+    width: 100% !important;
+    max-width: 360px !important;   /* change to 320px if you want even narrower */
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  /* Slightly reduce header paddings on small screens */
+  .app-shell {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  /* Make sure the inner scrollable area behaves */
+  .app-root { overflow-x: hidden !important; }
+  .app-shell { overflow: hidden !important; }
+  .app-layout { overflow-y: auto !important; -webkit-overflow-scrolling: touch !important; }
+
+  /* Make forms and buttons fill the small width nicely */
+  .panel-form-row { gap: 8px !important; flex-direction: column !important; align-items: stretch !important; }
+  .panel-form-row .btn { width: 100% !important; margin-left: 0 !important; }
+
+  /* Make inputs comfortable but not oversized */
+  .input, .subtask-input {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    font-size: 0.95rem !important;
+  }
+
+  /* Keep tags and long text from forcing width */
+  .task-tags-row, .tag, .activity-item, .activity-text {
+    word-break: break-word !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  /* Tweak small elements */
+  .btn-circle { width: 36px !important; height: 36px !important; }
+  .btn-logout { padding: 6px 10px !important; font-size: 0.95rem !important; }
+  .task-title { font-size: 1rem !important; }
+  .subtask-title { font-size: 0.95rem !important; }
+}
+
+/* stronger constraint for very narrow phones */
+@media (max-width: 360px) {
+  .panel,
+  .sidebar-panel,
+  .tasks-panel,
+  .activity-panel,
+  .task-card {
+    max-width: 320px !important; /* narrow the boxes for 320px screens */
+  }
+
+  .panel, .task-card {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+
+  .panel-form-row .btn { padding: 8px 10px !important; }
+  .tag { font-size: 0.78rem !important; padding: 5px 8px !important; }
+}
+/* AUTH form surface follows theme */
+.auth-card .auth-form {
+  /* use the same surface variable as other panels so it toggles with theme */
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.95));
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  border-radius: 10px;
+}
+
+/* Dark theme override: make auth-form dark like the left panel */
+body[data-theme="dark"] .auth-card .auth-form {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+}
+
+/* keep padding consistent if you removed inline padding */
+.auth-card .auth-form { padding: 18px; }
+/* ---------------------------
+   Professional Login Card Styles
+   Append to end of src/index.css
+   --------------------------- */
+
+.auth-root {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 18px;
+  background: var(--bg-page);
+}
+
+/* The large card that contains both columns */
+.auth-card {
+  width: 100%;
+  max-width: 1100px;
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 22px;
+  align-items: start;
+  border-radius: calc(var(--radius) * 1.2);
+  padding: 22px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.96));
+}
+
+/* Left column: branding + features */
+.auth-left {
+  padding: 14px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.auth-left .brand .app-title { margin: 0 0 6px 0; font-size: 1.5rem; font-weight: 800; }
+.auth-left .app-subtitle { margin: 0; color: var(--text-muted); }
+
+/* Feature list */
+.feature-list {
+  margin: 8px 0 0 0;
+  padding-left: 1.1rem;
+  color: var(--text-muted);
+}
+.feature-list li { margin: 6px 0; line-height: 1.4; }
+
+/* Smaller explanatory paragraph */
+.feature-desc { margin-top: 8px; color: var(--text-muted); line-height: 1.5; }
+
+/* Right column: the form */
+.auth-form {
+  width: 100%;
+  max-width: 420px;
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 12px 28px rgba(16,24,40,0.04);
+  border: 1px solid rgba(16,24,40,0.04);
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.95));
+}
+body[data-theme="dark"] .auth-form {
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 14px 34px rgba(0,0,0,0.6);
+}
+
+.login-title { margin: 0 0 6px 0; font-size: 1.15rem; font-weight: 800; color: var(--text-primary); }
+.login-sub { margin: 0 0 12px 0; color: var(--text-muted); font-size: 0.95rem; }
+
+/* label, input & helper */
+.input-label { display:block; margin: 8px 0 6px 0; color: var(--text-muted); font-size: 0.85rem; font-weight:700; }
+.input { width:100%; padding:12px 14px; border-radius: 999px; border:1px solid var(--border); outline:none; font-size:0.95rem; background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.96)); }
+body[data-theme="dark"] .input { background: rgba(255,255,255,0.02); color: var(--text-primary); border-color: var(--border); }
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid rgba(16,24,40,0.06);
+  color: var(--text-primary);
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 8px 12px;
+}
+.btn-ghost:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(16,24,40,0.04); }
+
+.login-note {
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* Make the whole auth-card dark when page theme is dark */
+body[data-theme="dark"] .auth-card,
+body[data-theme="dark"] .auth-left {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.04);
+  color: var(--text-primary);
+}
+body[data-theme="dark"] .auth-card {
+  box-shadow: 0 18px 40px rgba(0,0,0,0.6);
+}
+
+/* Responsive: stack columns on smaller screens */
+@media (max-width: 900px) {
+  .auth-card {
+    grid-template-columns: 1fr;
+    max-width: 680px;
+  }
+  .auth-form { max-width: 100%; }
+}
+
+/* Extra small screens: tidy spacing & internal scroll */
+@media (max-width: 420px) {
+  .auth-card {
+    padding: 12px;
+    gap: 10px;
+    max-width: calc(100% - 16px);
+  }
+  .auth-left { padding: 8px; }
+  .auth-form { padding: 12px; }
+  .input { padding: 10px 12px; font-size: 0.95rem; }
+}
