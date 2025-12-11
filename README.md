@@ -61,8 +61,7 @@ src/
 
 ## 🌍 Live Demo
 
-**Live URL:** https://<your-deployment-url>  
-*(Replace with Netlify/Vercel URL)*
+**Live URL:** https://collaborative-todo-nine.vercel.app
 
 ---
 
