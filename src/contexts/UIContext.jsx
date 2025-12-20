@@ -1,23 +1,35 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+} from "react";
 
 const UIContext = createContext(null);
 
 export function UIProvider({ children }) {
   const [theme, setTheme] = useState("light");
 
+ 
   useEffect(() => {
-    // Apply theme to document body
     document.body.setAttribute("data-theme", theme);
   }, [theme]);
 
-  function toggleTheme() {
+ 
+  const toggleTheme = useCallback(() => {
     setTheme((prev) => (prev === "light" ? "dark" : "light"));
-  }
+  }, []);
 
-  const value = {
-    theme,
-    toggleTheme,
-  };
+  
+  const value = useMemo(
+    () => ({
+      theme,
+      toggleTheme,
+    }),
+    [theme, toggleTheme]
+  );
 
   return <UIContext.Provider value={value}>{children}</UIContext.Provider>;
 }

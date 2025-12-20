@@ -1,4 +1,10 @@
-import { createContext, useContext, useReducer } from "react";
+import {
+  createContext,
+  useContext,
+  useReducer,
+  useCallback,
+  useMemo,
+} from "react";
 import { useCollaboration } from "./CollaborationContext.jsx";
 
 const TodosContext = createContext(null);
@@ -47,15 +53,16 @@ function todosReducer(state, action) {
     }
 
     case "DELETE_LIST": {
-      const updatedLists = state.lists.filter((l) => l.id !== action.id);
+      const lists = state.lists.filter((l) => l.id !== action.id);
+
       const newSelected =
         state.selectedListId === action.id
-          ? updatedLists[0]?.id || null
+          ? lists[0]?.id || null
           : state.selectedListId;
 
       return {
         ...state,
-        lists: updatedLists,
+        lists,
         selectedListId: newSelected,
       };
     }
@@ -63,7 +70,7 @@ function todosReducer(state, action) {
     case "SELECT_LIST":
       return { ...state, selectedListId: action.id };
 
-    case "ADD_TASK": {
+    case "ADD_TASK":
       return {
         ...state,
         lists: state.lists.map((list) =>
@@ -84,9 +91,8 @@ function todosReducer(state, action) {
             : list
         ),
       };
-    }
 
-    case "TOGGLE_TASK": {
+    case "TOGGLE_TASK":
       return {
         ...state,
         lists: state.lists.map((list) =>
@@ -102,9 +108,8 @@ function todosReducer(state, action) {
             : list
         ),
       };
-    }
 
-    case "DELETE_TASK": {
+    case "DELETE_TASK":
       return {
         ...state,
         lists: state.lists.map((list) =>
@@ -116,26 +121,23 @@ function todosReducer(state, action) {
             : list
         ),
       };
-    }
 
-    // ---------- SUBTASKS ----------
-    case "ADD_SUBTASK": {
-      const { listId, taskId, title } = action;
+    case "ADD_SUBTASK":
       return {
         ...state,
         lists: state.lists.map((list) =>
-          list.id === listId
+          list.id === action.listId
             ? {
                 ...list,
                 tasks: list.tasks.map((task) =>
-                  task.id === taskId
+                  task.id === action.taskId
                     ? {
                         ...task,
                         subtasks: [
                           ...task.subtasks,
                           {
                             id: crypto.randomUUID(),
-                            title,
+                            title: action.title,
                             completed: false,
                           },
                         ],
@@ -146,22 +148,20 @@ function todosReducer(state, action) {
             : list
         ),
       };
-    }
 
-    case "TOGGLE_SUBTASK": {
-      const { listId, taskId, subtaskId } = action;
+    case "TOGGLE_SUBTASK":
       return {
         ...state,
         lists: state.lists.map((list) =>
-          list.id === listId
+          list.id === action.listId
             ? {
                 ...list,
                 tasks: list.tasks.map((task) =>
-                  task.id === taskId
+                  task.id === action.taskId
                     ? {
                         ...task,
                         subtasks: task.subtasks.map((st) =>
-                          st.id === subtaskId
+                          st.id === action.subtaskId
                             ? { ...st, completed: !st.completed }
                             : st
                         ),
@@ -172,22 +172,20 @@ function todosReducer(state, action) {
             : list
         ),
       };
-    }
 
-    case "DELETE_SUBTASK": {
-      const { listId, taskId, subtaskId } = action;
+    case "DELETE_SUBTASK":
       return {
         ...state,
         lists: state.lists.map((list) =>
-          list.id === listId
+          list.id === action.listId
             ? {
                 ...list,
                 tasks: list.tasks.map((task) =>
-                  task.id === taskId
+                  task.id === action.taskId
                     ? {
                         ...task,
                         subtasks: task.subtasks.filter(
-                          (st) => st.id !== subtaskId
+                          (st) => st.id !== action.subtaskId
                         ),
                       }
                     : task
@@ -196,46 +194,37 @@ function todosReducer(state, action) {
             : list
         ),
       };
-    }
 
-    // ---------- TAGS ----------
-    case "ADD_TAG": {
-      const { listId, taskId, tag } = action;
+    case "ADD_TAG":
       return {
         ...state,
         lists: state.lists.map((list) =>
-          list.id === listId
+          list.id === action.listId
             ? {
                 ...list,
                 tasks: list.tasks.map((task) =>
-                  task.id === taskId
-                    ? task.tags.includes(tag)
-                      ? task
-                      : {
-                          ...task,
-                          tags: [...task.tags, tag],
-                        }
+                  task.id === action.taskId &&
+                  !task.tags.includes(action.tag)
+                    ? { ...task, tags: [...task.tags, action.tag] }
                     : task
                 ),
               }
             : list
         ),
       };
-    }
 
-    case "REMOVE_TAG": {
-      const { listId, taskId, tag } = action;
+    case "REMOVE_TAG":
       return {
         ...state,
         lists: state.lists.map((list) =>
-          list.id === listId
+          list.id === action.listId
             ? {
                 ...list,
                 tasks: list.tasks.map((task) =>
-                  task.id === taskId
+                  task.id === action.taskId
                     ? {
                         ...task,
-                        tags: task.tags.filter((t) => t !== tag),
+                        tags: task.tags.filter((t) => t !== action.tag),
                       }
                     : task
                 ),
@@ -243,7 +232,6 @@ function todosReducer(state, action) {
             : list
         ),
       };
-    }
 
     default:
       return state;
@@ -254,107 +242,83 @@ export function TodosProvider({ children }) {
   const [state, dispatch] = useReducer(todosReducer, initialState);
   const { addActivity } = useCollaboration();
 
-  const addList = (name) => {
+  const addList = useCallback((name) => {
     dispatch({ type: "ADD_LIST", name });
-    addActivity(`Created new list "${name}"`);
-  };
+    addActivity(`Created list "${name}"`);
+  }, [addActivity]);
 
-  const deleteList = (id) => {
-    const list = state.lists.find((l) => l.id === id);
+  const deleteList = useCallback((id) => {
     dispatch({ type: "DELETE_LIST", id });
-    addActivity(`Deleted list "${list?.name}"`);
-  };
+    addActivity(`Deleted a list`);
+  }, [addActivity]);
 
-  const selectList = (id) => dispatch({ type: "SELECT_LIST", id });
+  const selectList = useCallback((id) => {
+    dispatch({ type: "SELECT_LIST", id });
+  }, []);
 
-  const addTask = (listId, title) => {
-    const list = state.lists.find((l) => l.id === listId);
+  const addTask = useCallback((listId, title) => {
     dispatch({ type: "ADD_TASK", listId, title });
-    addActivity(`Added task "${title}" to list "${list?.name}"`);
-  };
+    addActivity(`Added task "${title}"`);
+  }, [addActivity]);
 
-  const toggleTask = (listId, taskId) => {
-    const list = state.lists.find((l) => l.id === listId);
-    const task = list?.tasks.find((t) => t.id === taskId);
-
+  const toggleTask = useCallback((listId, taskId) => {
     dispatch({ type: "TOGGLE_TASK", listId, taskId });
+    addActivity(`Toggled task status`);
+  }, [addActivity]);
 
-    if (task) {
-      addActivity(
-        `${task.title} marked as ${
-          task.completed ? "incomplete" : "completed"
-        }`
-      );
-    }
-  };
-
-  const deleteTask = (listId, taskId) => {
-    const list = state.lists.find((l) => l.id === listId);
-    const task = list?.tasks.find((t) => t.id === taskId);
-
+  const deleteTask = useCallback((listId, taskId) => {
     dispatch({ type: "DELETE_TASK", listId, taskId });
-    addActivity(`Deleted task "${task?.title}"`);
-  };
+    addActivity(`Deleted task`);
+  }, [addActivity]);
 
-  // ---------- SUBTASK actions ----------
-  const addSubtask = (listId, taskId, title) => {
-    const list = state.lists.find((l) => l.id === listId);
-    const task = list?.tasks.find((t) => t.id === taskId);
-
+  const addSubtask = useCallback((listId, taskId, title) => {
     dispatch({ type: "ADD_SUBTASK", listId, taskId, title });
-    addActivity(
-      `Added subtask "${title}" under "${task?.title}" in list "${list?.name}"`
-    );
-  };
+    addActivity(`Added subtask "${title}"`);
+  }, [addActivity]);
 
-  const toggleSubtask = (listId, taskId, subtaskId) => {
+  const toggleSubtask = useCallback((listId, taskId, subtaskId) => {
     dispatch({ type: "TOGGLE_SUBTASK", listId, taskId, subtaskId });
-    addActivity(`Toggled a subtask`);
-  };
+    addActivity(`Toggled subtask`);
+  }, [addActivity]);
 
-  const deleteSubtask = (listId, taskId, subtaskId) => {
+  const deleteSubtask = useCallback((listId, taskId, subtaskId) => {
     dispatch({ type: "DELETE_SUBTASK", listId, taskId, subtaskId });
-    addActivity(`Deleted a subtask`);
-  };
+    addActivity(`Deleted subtask`);
+  }, [addActivity]);
 
-  // ---------- TAG actions ----------
-  const addTag = (listId, taskId, rawTag) => {
-    const tag = rawTag.trim();
-    if (!tag) return;
-
-    const list = state.lists.find((l) => l.id === listId);
-    const task = list?.tasks.find((t) => t.id === taskId);
-
+  const addTag = useCallback((listId, taskId, tag) => {
     dispatch({ type: "ADD_TAG", listId, taskId, tag });
-    addActivity(`Added tag "${tag}" to task "${task?.title}"`);
-  };
+    addActivity(`Added tag "${tag}"`);
+  }, [addActivity]);
 
-  const removeTag = (listId, taskId, tag) => {
-    const list = state.lists.find((l) => l.id === listId);
-    const task = list?.tasks.find((t) => t.id === taskId);
-
+  const removeTag = useCallback((listId, taskId, tag) => {
     dispatch({ type: "REMOVE_TAG", listId, taskId, tag });
-    addActivity(`Removed tag "${tag}" from task "${task?.title}"`);
-  };
+    addActivity(`Removed tag "${tag}"`);
+  }, [addActivity]);
 
-  const value = {
-    lists: state.lists,
-    selectedListId: state.selectedListId,
-    addList,
-    deleteList,
-    selectList,
-    addTask,
-    toggleTask,
-    deleteTask,
-    addSubtask,
-    toggleSubtask,
-    deleteSubtask,
-    addTag,
-    removeTag,
-  };
+  const value = useMemo(
+    () => ({
+      lists: state.lists,
+      selectedListId: state.selectedListId,
+      addList,
+      deleteList,
+      selectList,
+      addTask,
+      toggleTask,
+      deleteTask,
+      addSubtask,
+      toggleSubtask,
+      deleteSubtask,
+      addTag,
+      removeTag,
+    }),
+    [state, addList, deleteList, selectList, addTask, toggleTask, deleteTask, addSubtask, toggleSubtask, deleteSubtask, addTag, removeTag]
+  );
 
   return (
-    <TodosContext.Provider value={value}>{children}</TodosContext.Provider>
+    <TodosContext.Provider value={value}>
+      {children}
+    </TodosContext.Provider>
   );
 }
 

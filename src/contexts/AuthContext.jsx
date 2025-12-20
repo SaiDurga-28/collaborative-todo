@@ -1,32 +1,35 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useCallback, useMemo } from "react";
 
-// 1. Create Context
+
 const AuthContext = createContext(null);
 
-// 2. Provider Component
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
 
-  function login(name) {
-    // mock login – just save the name
+
+  const login = useCallback((name) => {
     setUser({ name });
-  }
+  }, []);
 
-  function logout() {
+  const logout = useCallback(() => {
     setUser(null);
-  }
+  }, []);
 
-  const value = {
+
+  const value = useMemo(() => ({
     user,
     isAuthenticated: user !== null,
     login,
     logout,
-  };
+  }), [user, login, logout]);
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
-// 3. Custom hook (easy usage)
 export function useAuth() {
   return useContext(AuthContext);
 }

@@ -1,38 +1,3 @@
-// import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
-// import './App.css'
-
-// function App() {
-//   const [count, setCount] = useState(0)
-
-//   return (
-//     <>
-//       <div>
-//         <a href="https://vite.dev" target="_blank">
-//           <img src={viteLogo} className="logo" alt="Vite logo" />
-//         </a>
-//         <a href="https://react.dev" target="_blank">
-//           <img src={reactLogo} className="logo react" alt="React logo" />
-//         </a>
-//       </div>
-//       <h1>Vite + React</h1>
-//       <div className="card">
-//         <button onClick={() => setCount((count) => count + 1)}>
-//           count is {count}
-//         </button>
-//         <p>
-//           Edit <code>src/App.jsx</code> and save to test HMR
-//         </p>
-//       </div>
-//       <p className="read-the-docs">
-//         Click on the Vite and React logos to learn more
-//       </p>
-//     </>
-//   )
-// }
-
-// export default App
 import React, { useState, useMemo, useCallback, memo, useEffect } from "react";
 import { FiSun, FiMoon, FiInbox, FiList, FiCheckSquare } from "react-icons/fi";
 
@@ -41,7 +6,7 @@ import { useTodos } from "./contexts/TodosContext.jsx";
 import { useUI } from "./contexts/UIContext.jsx";
 import { useCollaboration } from "./contexts/CollaborationContext.jsx";
 
-/* ------------------ LEFT SIDEBAR (Lists) ------------------ */
+
 const ListSidebar = memo(function ListSidebar({
   lists,
   selectedListId,
@@ -125,7 +90,7 @@ const ListSidebar = memo(function ListSidebar({
   );
 });
 
-/* ================= UPDATED TaskSection (inline subtask inputs) ================= */
+
 const TaskSection = memo(function TaskSection({
   currentList,
   onAddTask,
@@ -308,7 +273,7 @@ const TaskSection = memo(function TaskSection({
   );
 });
 
-/* ------------------ RIGHT (Activity) ------------------ */
+
 const ActivityPanel = memo(function ActivityPanel({ activityLog }) {
   return (
     <aside className="panel activity-panel">
@@ -325,7 +290,6 @@ const ActivityPanel = memo(function ActivityPanel({ activityLog }) {
   );
 });
 
-/* ------------------ MAIN APP ------------------ */
 export default function App() {
   const { user, isAuthenticated, login, logout } = useAuth();
   const {
@@ -347,12 +311,6 @@ export default function App() {
   const { activityLog } = useCollaboration();
 
   const [name, setName] = useState("");
-
-  useEffect(() => {
-    try {
-      document.body.setAttribute("data-theme", theme);
-    } catch (e) {}
-  }, [theme]);
 
   const currentList = useMemo(
     () => lists.find((l) => l.id === selectedListId) || lists[0] || null,
@@ -387,7 +345,7 @@ export default function App() {
     }
   }, [logout]);
 
-  /* ---------------- UNAUTHENTICATED (professional responsive login) ---------------- */
+  
   if (!isAuthenticated) {
     return (
       <div className="auth-root">
@@ -446,7 +404,7 @@ export default function App() {
     );
   }
 
-  /* ---------------- AUTHENTICATED (main app) ---------------- */
+
   return (
     <div className="app-root">
       <div className="app-shell">

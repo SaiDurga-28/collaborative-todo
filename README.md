@@ -1,43 +1,43 @@
-# 🌐 Collaborative Todo Application  
+# Collaborative Todo Application  
 
 A feature-rich, responsive, collaborative Todo application built using **React** and **advanced Context API architecture**.  
 This project demonstrates multi-context state management, performance optimization with memoization, custom hooks, simulated collaboration, and modern UI/UX.
 
 ---
 
-## 🚀 Features
+## Features
 
-### 🔐 Authentication
+### Authentication
 - Mock login/logout using a simple username.
 - App content is protected and only visible to authenticated users.
 
-### 📝 Task Management
+### Task Management
 - Create, edit, complete, and delete tasks.
 - Nested subtasks structure.
 - Add and remove tags.
 - Multiple lists (Inbox + custom lists).
 - All operations update immediately.
 
-### 🤝 Collaboration Simulation
+### Collaboration Simulation
 - Activity feed logs all user actions.
 - Simulates multi-user collaboration.
 
-### 🎨 UI & User Preferences
+### UI & User Preferences
 - Light/Dark theme toggle.
 - Fully responsive UI (Mobile, Tablet, Desktop).
 - Clean, modern, minimalistic design.
 
-### ⚡ Performance Optimizations
+### Performance Optimizations
 - `React.memo`
 - `useCallback`, `useMemo`
 - Split Context Architecture → AuthContext, TodosContext, UIContext, CollaborationContext
 
-### 🧩 Custom Hooks
+### Custom Hooks
 - `useAuth`, `useTodos`, `useUI`, `useCollaboration`
 
 ---
 
-## 🏗 Tech Stack
+## Tech Stack
 - React (Vite)
 - React Context API
 - React Icons
@@ -45,7 +45,7 @@ This project demonstrates multi-context state management, performance optimizati
 
 ---
 
-## 📁 Project Architecture
+## Project Architecture
 src/
 ├── App.jsx
 ├── index.css
@@ -59,19 +59,13 @@ src/
 
 ---
 
-## 🌍 Live Demo
+## Live Demo
 
 **Live URL:** https://collaborative-todo-nine.vercel.app
 
 ---
 
-## 🖼️ Screenshot Previews
-
-> Add these images inside `/screenshots/`
-
-- `screenshots/desktop.png` — Desktop view  
-- `screenshots/tablet.png` — Tablet view  
-- `screenshots/mobile.png` — Mobile view
+## Screenshot Previews
 
 Desktop Preview  
 ![Desktop](screenshots/desktop.png)
@@ -84,7 +78,7 @@ Mobile Preview
 
 ---
 
-## 🎥 Video Walkthrough (2–5 minutes)
+## Video Walkthrough (2–5 minutes)
 
 **Video URL:** https://drive.google.com/file/d/1VTxMyw3D3x8BMS7RVPvWTmdppSqahLh_/view?usp=sharing
 
@@ -101,18 +95,18 @@ Mobile Preview
 
 ---
 
-### ⚙️ Setup & Installation
+### Setup & Installation
 
 Follow these steps to run the Collaborative Todo Application locally on your system.
 
-**📥 1. Download or Clone the Repository**
+**1. Download or Clone the Repository**
 
 You can get the project using Git:
 ```bash
    git clone https://github.com/SaiDurga-28/collaborative-todo.git
    cd collaborative-todo
 ```
-**📦 2. Install Dependencies**
+**2. Install Dependencies**
 
 Install all required packages:
 
@@ -132,7 +126,7 @@ This installs:
 
 - Other dependencies
 
-**🚀 3. Start the Development Server**
+**3. Start the Development Server**
 
 Run the app locally:
 
